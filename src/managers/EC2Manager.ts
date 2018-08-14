@@ -16,7 +16,7 @@ export default class EC2Manager extends AbstractManager {
             new StopCommand(this),
             new RefreshCommand(this)
         ];
-        this.ec2Provider = new EC2ContainerProvider();
+        this.ec2Provider = new EC2ContainerProvider(this);
     }
 
     get client() {

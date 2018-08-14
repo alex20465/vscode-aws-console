@@ -1,6 +1,6 @@
-import * as AWS from "aws-sdk";
 import * as vscode from "vscode";
 import { Instance } from "aws-sdk/clients/ec2";
+import EC2Manager from "../managers/EC2Manager";
 
 export class EC2ContainerProvider
     implements vscode.TreeDataProvider<vscode.TreeItem> {
@@ -11,6 +11,8 @@ export class EC2ContainerProvider
     readonly onDidChangeTreeData: vscode.Event<
         EC2ContainerItem | undefined
     > = this._onDidChangeTreeData.event;
+
+    constructor(private manager: EC2Manager) {}
 
     getTreeItem(element: EC2ContainerItem): vscode.TreeItem {
         return element;
@@ -23,9 +25,7 @@ export class EC2ContainerProvider
             return Promise.resolve([]);
         }
 
-        const ec2 = new AWS.EC2({ region: "eu-central-1" });
-
-        return ec2
+        return this.manager.client
             .describeInstances({})
             .promise()
             .then(response => {
