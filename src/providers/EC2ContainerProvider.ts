@@ -106,7 +106,6 @@ export class EC2ContainerItem extends vscode.TreeItem {
 
     getDetailTreeItems(): vscode.TreeItem[] {
         return [
-            "AmiLaunchIndex",
             "ImageId",
             "InstanceId",
             "InstanceType",
@@ -116,21 +115,15 @@ export class EC2ContainerItem extends vscode.TreeItem {
             "PrivateIpAddress",
             "PublicDnsName",
             "PublicIpAddress",
-            "StateTransitionReason",
             "SubnetId",
             "VpcId",
             "Architecture",
-            "ClientToken",
-            "EbsOptimized",
-            "EnaSupport",
-            "Hypervisor",
-            "RootDeviceName",
-            "RootDeviceType",
-            "SourceDestCheck",
-            "VirtualizationType"
+            "ClientToken"
         ].map(name => {
             const value = (this.instance as any)[name] as string;
-            return new vscode.TreeItem(`${name} : ${value}`);
+            const item = new vscode.TreeItem(`${name} : ${value}`);
+            item.contextValue = "detail_item";
+            return item;
         });
     }
 }

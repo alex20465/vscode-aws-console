@@ -2,7 +2,12 @@ import * as vscode from "vscode";
 import { EC2 } from "aws-sdk";
 import AbstractManager from "./AbstractManager";
 import AbstractCommand from "../commands/AbstractCommand";
-import { StartCommand, StopCommand, RefreshCommand } from "../commands/ec2";
+import {
+    StartCommand,
+    StopCommand,
+    RefreshCommand,
+    CopyCommand
+} from "../commands/ec2";
 import { EC2ContainerProvider } from "../providers/EC2ContainerProvider";
 
 export default class EC2Manager extends AbstractManager {
@@ -16,7 +21,8 @@ export default class EC2Manager extends AbstractManager {
         this.commands = [
             new StartCommand(this),
             new StopCommand(this),
-            new RefreshCommand(this)
+            new RefreshCommand(this),
+            new CopyCommand(this)
         ];
 
         this.ec2Provider = new EC2ContainerProvider(this);
