@@ -76,15 +76,15 @@ export class EC2ContainerItem extends vscode.TreeItem {
     getLabel() {
         const nameTag = this.tags["Name"];
         const instanceId = this.instance.InstanceId;
-        let suffix = "";
+        let prefix = "";
         if (this.instance.State && this.instance.State.Name) {
-            suffix = `${this.instance.State.Name}`;
+            prefix = `${this.instance.State.Name}`;
         }
 
         if (nameTag && instanceId) {
-            return `${nameTag} - ${instanceId} (${suffix})`;
+            return `[${prefix}] ${nameTag} - ${instanceId}`;
         } else if (instanceId) {
-            return `${instanceId} (${suffix})`;
+            return `[${prefix}] ${instanceId}`;
         } else {
             return "none";
         }
