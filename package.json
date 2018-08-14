@@ -1,6 +1,6 @@
 {
     "name": "vscode-aws-console",
-    "displayName": "vscode-aws-console",
+    "displayName": "AWS Console EC2 Manager",
     "description": "VS Code aws-console integration extension, allows you to manage resources such as EC2 containers.",
     "author": {
         "email": "fotiadis90@gmail.com",
@@ -152,5 +152,6 @@
         "aws-sdk": "^2.291.0",
         "clipboardy": "^1.2.3"
     },
-    "readme": "README.md"
+    "readme": "README.md",
+    "icon": "media/aws-console-logo.png"
 }
