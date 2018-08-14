@@ -3,16 +3,21 @@ import AbstractCommand from "../AbstractCommand";
 import EC2Manager from "../../managers/EC2Manager";
 
 export class StartCommand extends AbstractCommand<EC2Manager> {
-    run(item: EC2ContainerItem) {
+    async run(item: EC2ContainerItem) {
         if (!item || !(item instanceof EC2ContainerItem)) {
             return null;
         }
 
-        return this.manager.client
+        await this.manager.client
             .startInstances({
                 InstanceIds: [item.instanceId]
             })
             .promise();
+        this.manager.ec2Provider.refresh();
+        while (await this.manager.isInstanceInProgress(item.instanceId)) {
+            await new Promise(resolve => setTimeout(() => resolve(), 5000));
+        }
+        this.manager.ec2Provider.refresh();
     }
     name() {
         return "awsconsole.ec2.startContainer";

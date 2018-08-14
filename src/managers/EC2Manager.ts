@@ -68,4 +68,19 @@ export default class EC2Manager extends AbstractManager {
             );
         });
     }
+
+    public async isInstanceInProgress(instanceId: string): Promise<boolean> {
+        const statusCode = await this.getInstanceStatusCode(instanceId);
+        return [0, 32, 64].indexOf(statusCode) !== -1;
+    }
+
+    public async getInstanceStatusCode(instanceId: string): Promise<number> {
+        const { Reservations } = (await this.client
+            .describeInstances({
+                InstanceIds: [instanceId]
+            })
+            .promise()) as any;
+
+        return Reservations[0].Instances[0].State.Code;
+    }
 }
