@@ -7,16 +7,35 @@ import { EC2ContainerProvider } from "../providers/EC2ContainerProvider";
 
 export default class EC2Manager extends AbstractManager {
     private commands: AbstractCommand<EC2Manager>[];
+    private _client: EC2 = new EC2();
+
     public ec2Provider: EC2ContainerProvider;
 
-    constructor(private _client: EC2) {
+    constructor() {
         super();
         this.commands = [
             new StartCommand(this),
             new StopCommand(this),
             new RefreshCommand(this)
         ];
+
         this.ec2Provider = new EC2ContainerProvider(this);
+
+        this.init();
+
+        vscode.workspace.onDidChangeConfiguration(() => {
+            this.init();
+            this.ec2Provider.refresh();
+        });
+    }
+
+    public init() {
+        const { region } = vscode.workspace.getConfiguration(
+            "awsconsole.ec2",
+            null
+        );
+
+        this._client = new EC2({ region });
     }
 
     get client() {
